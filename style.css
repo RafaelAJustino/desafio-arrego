@@ -63,16 +63,17 @@ main {
 }
 
 /* Estilos da Tela de Cadastro */
-#tela-cadastro.ativa {
-  display: flex;
+#tela-cadastro {
+  display: none;
   flex-direction: column;
 }
 
-#tela-cadastro {
-  display: none;
+#tela-cadastro.ativa {
+  display: flex;
 }
 
-#cadastro-form {
+#cadastro-form,
+#desafio-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -91,11 +92,14 @@ main {
 }
 
 .input-group input,
-.input-group select {
+.input-group select,
+.input-group textarea {
   padding: 0.8rem;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
 }
 
 .button {
@@ -108,6 +112,13 @@ main {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 0.5rem;
+}
+
+#start-game-btn {
+  position: sticky;
+  bottom: 12px;
+  margin-top: 2rem;
 }
 
 .button:hover {
@@ -122,17 +133,28 @@ main {
   background-color: #5a6268;
 }
 
-#lista-jogadores-cadastrados h3 {
+#lista-jogadores-cadastrados,
+#cadastro-desafio {
+  margin-top: 1.5rem;
+  border-top: 1px solid #ffc2d1;
+  padding-top: 1.5rem;
+}
+
+#lista-jogadores-cadastrados h3,
+#cadastro-desafio h3,
+#lista-desafios-customizados h4 {
   margin-bottom: 1rem;
   color: var(--dark-color);
 }
 
-#lista-jogadores {
+#lista-jogadores,
+#lista-desafios {
   list-style: none;
   padding: 0;
 }
 
-#lista-jogadores li {
+#lista-jogadores li,
+#lista-desafios li {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -141,6 +163,13 @@ main {
   border-radius: 5px;
   margin-bottom: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  word-break: break-word;
+}
+
+#lista-jogadores li span,
+#lista-desafios li span {
+  flex-grow: 1;
+  margin-right: 1rem;
 }
 
 .remove-btn {
@@ -149,7 +178,34 @@ main {
   color: var(--primary-color);
   cursor: pointer;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.8rem;
+  padding: 0.2rem;
+  white-space: nowrap;
+}
+
+.explicacao-variaveis {
+  background-color: #ffe5e9;
+  border-left: 4px solid var(--secondary-color);
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.explicacao-variaveis p {
+  margin-bottom: 0.5rem;
+}
+
+.explicacao-variaveis ul {
+  list-style-position: inside;
+  padding-left: 0.5rem;
+}
+
+.explicacao-variaveis code {
+  background-color: #ffc2d1;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: monospace;
 }
 
 /* Estilos da Tela do Jogo */

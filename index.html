@@ -22,6 +22,7 @@
       <main>
         <!-- Tela de Cadastro de Jogadores -->
         <div id="tela-cadastro" class="tela ativa">
+          <!-- Cadastro de Jogadores -->
           <form id="cadastro-form" onsubmit="return false;">
             <div class="input-group">
               <label for="nome">Nome do Jogador:</label>
@@ -54,14 +55,69 @@
             <ul id="lista-jogadores"></ul>
           </div>
 
+          <!-- NOVA SEÇÃO: Cadastro de Desafios -->
+          <div id="cadastro-desafio">
+            <h3>Criar Desafios Personalizados</h3>
+            <form id="desafio-form" onsubmit="return false;">
+              <div class="input-group">
+                <label for="texto-desafio-customizado">Texto do Desafio:</label>
+                <textarea
+                  id="texto-desafio-customizado"
+                  rows="3"
+                  placeholder="Ex: {Jogador 1} beija {Jogador 2} por {tempo}."
+                ></textarea>
+              </div>
+              <div class="input-group">
+                <label for="genero-desafio">Gênero-alvo do Jogador 1:</label>
+                <select id="genero-desafio">
+                  <option value="qualquer">Qualquer Gênero</option>
+                  <option value="homem">Homem</option>
+                  <option value="mulher">Mulher</option>
+                </select>
+              </div>
+              <button class="button" id="add-challenge-btn">
+                Adicionar Desafio
+              </button>
+            </form>
+
+            <div class="explicacao-variaveis">
+              <p>
+                <strong>Como usar as variáveis:</strong> As variáveis são
+                substituídas automaticamente durante o jogo.
+              </p>
+              <ul>
+                <li>
+                  <code>{Jogador 1}</code>: O jogador da vez, que deve cumprir o
+                  desafio.
+                </li>
+                <li>
+                  <code>{Jogador 2}</code>: Um outro jogador aleatório,
+                  selecionado com base na preferência do Jogador 1.
+                </li>
+                <li>
+                  <code>{tempo}</code>: Sorteia uma duração de tempo (ex: 15
+                  segundos, 1 minuto).
+                </li>
+                <li>
+                  <code>{rodada}</code>: Sorteia uma duração em rodadas (ex: 1
+                  rodada, 2 rodadas).
+                </li>
+              </ul>
+            </div>
+
+            <div id="lista-desafios-customizados">
+              <h4>Seus Desafios:</h4>
+              <ul id="lista-desafios"></ul>
+            </div>
+          </div>
+          <!-- FIM DA NOVA SEÇÃO -->
+
           <button class="button" id="start-game-btn">Iniciar Jogo</button>
         </div>
 
         <!-- Tela Principal do Jogo -->
         <div id="tela-jogo" class="tela">
           <div id="info-jogador-ativo">
-            <!-- É a vez de: <br />
-            <span id="nome-jogador-ativo"></span> -->
             <ins
               class="adsbygoogle"
               style="display: block"

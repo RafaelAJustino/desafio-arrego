@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- NOVA ESTRUTURA DE DESAFIOS ---
-    // Cada desafio é um objeto com a string e o gênero alvo do Jogador 1.
-    // 'qualquer' serve para ambos os gêneros.
+    // --- ESTRUTURA DE DESAFIOS PADRÃO ---
     const desafios = [
         { desafio: '{Jogador 1} dá um selinho em {Jogador 2}.', genero: 'qualquer' },
         { desafio: '{Jogador 1} beija de língua {Jogador 2}.', genero: 'qualquer' },
@@ -23,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { desafio: '{Jogador 1} fica apenas de calcinha por {rodada}.', genero: 'mulher' },
         { desafio: '{Jogador 1} fica apenas de cueca por {rodada}.', genero: 'homem' },
         { desafio: '{Jogador 1} dança no colo de {Jogador 2} por {tempo}.', genero: 'mulher' },
-        { desafio: '{Jogador 1} acaricie os peitos de {Jogador 2} por {tempo}.', genero: 'qualquer' }, // O gênero do J2 é aleatório
+        { desafio: '{Jogador 1} acaricie os peitos de {Jogador 2} por {tempo}.', genero: 'qualquer' },
         { desafio: '{Jogador 1} mostra os peitos para todo mundo.', genero: 'mulher' },
         { desafio: '{Jogador 1} mostra a bunda para todo mundo.', genero: 'qualquer' },
         { desafio: '{Jogador 1} simula uma posição sexual com {Jogador 2} por {tempo}.', genero: 'qualquer' },
@@ -97,25 +95,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tempos = ['15 segundos', '30 segundos', '1 minuto'];
     const rodadas = ['1 rodada', '2 rodadas', '3 rodadas'];
-    const CACHE_KEY = 'verdadeOuDesafioJogadores';
+    const CACHE_KEY_JOGADORES = 'verdadeOuDesafioJogadores';
+    const CACHE_KEY_DESAFIOS = 'verdadeOuDesafioDesafiosCustom'; // Nova chave de cache
 
     let jogadores = [];
+    let desafiosCustomizados = []; // Novo array para desafios personalizados
     let jogadorAtivoIndex = 0;
 
     // --- Funções de Cache (localStorage) ---
     function salvarJogadoresNoCache() {
-        localStorage.setItem(CACHE_KEY, JSON.stringify(jogadores));
+        localStorage.setItem(CACHE_KEY_JOGADORES, JSON.stringify(jogadores));
     }
 
     function carregarJogadoresDoCache() {
-        const jogadoresSalvos = localStorage.getItem(CACHE_KEY);
+        const jogadoresSalvos = localStorage.getItem(CACHE_KEY_JOGADORES);
         if (jogadoresSalvos) {
             jogadores = JSON.parse(jogadoresSalvos);
             renderizarJogadores();
         }
     }
 
-    // --- Funções de Lógica do Jogo ---
+    // Novas funções de cache para desafios
+    function salvarDesafiosCustomizadosNoCache() {
+        localStorage.setItem(CACHE_KEY_DESAFIOS, JSON.stringify(desafiosCustomizados));
+    }
+
+    function carregarDesafiosCustomizadosDoCache() {
+        const desafiosSalvos = localStorage.getItem(CACHE_KEY_DESAFIOS);
+        if (desafiosSalvos) {
+            desafiosCustomizados = JSON.parse(desafiosSalvos);
+            renderizarDesafiosCustomizados();
+        }
+    }
+
+    // --- Funções de Lógica do Jogo (Jogadores) ---
     function adicionarJogador() {
         const nomeInput = document.getElementById('nome');
         const generoInput = document.getElementById('genero');
@@ -159,6 +172,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Novas Funções de Lógica (Desafios) ---
+    function adicionarDesafioCustomizado() {
+        const textoInput = document.getElementById('texto-desafio-customizado');
+        const generoInput = document.getElementById('genero-desafio');
+        const texto = textoInput.value.trim();
+
+        if (!texto) {
+            alert('Por favor, escreva o texto do desafio.');
+            return;
+        }
+
+        const desafio = {
+            id: Date.now(),
+            desafio: texto,
+            genero: generoInput.value
+        };
+
+        desafiosCustomizados.push(desafio);
+        salvarDesafiosCustomizadosNoCache();
+        renderizarDesafiosCustomizados();
+        textoInput.value = '';
+        textoInput.focus();
+    }
+
+    function removerDesafioCustomizado(idDesafio) {
+        desafiosCustomizados = desafiosCustomizados.filter(d => d.id !== idDesafio);
+        salvarDesafiosCustomizadosNoCache();
+        renderizarDesafiosCustomizados();
+    }
+
+    function renderizarDesafiosCustomizados() {
+        const lista = document.getElementById('lista-desafios');
+        lista.innerHTML = '';
+        desafiosCustomizados.forEach(desafio => {
+            const item = document.createElement('li');
+            item.innerHTML = `<span>${desafio.desafio} <small>(${desafio.genero})</small></span>
+                              <button class="remove-btn" data-id="${desafio.id}">Remover</button>`;
+            lista.appendChild(item);
+        });
+    }
+
+
+    // --- Funções de Controle de Jogo ---
     function trocarTela(idTelaAtiva) {
         document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
         document.getElementById(idTelaAtiva).classList.add('ativa');
@@ -184,20 +240,25 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Jogadores insuficientes. O jogo foi finalizado.');
             return;
         }
+        
+        // Combina os desafios padrão com os desafios customizados
+        const todosDesafios = [...desafios, ...desafiosCustomizados];
+        if (todosDesafios.length === 0) {
+            document.getElementById('texto-desafio').innerHTML = `Não há desafios disponíveis. Adicione alguns desafios personalizados para jogar!`;
+            return;
+        }
 
         jogadorAtivoIndex = (jogadorAtivoIndex + 1) % jogadores.length;
         const jogador1 = jogadores[jogadorAtivoIndex];
 
-        // --- LÓGICA DE FILTRO DE DESAFIO MODIFICADA ---
-
         // 1. Filtra desafios com base no gênero do jogador ativo ('homem', 'mulher') ou 'qualquer'.
-        let desafiosCandidatos = desafios.filter(d =>
+        let desafiosCandidatos = todosDesafios.filter(d =>
             d.genero.toLowerCase() === jogador1.genero.toLowerCase() || d.genero.toLowerCase() === 'qualquer'
         );
 
         // 2. Fallback: se não houver desafios específicos para o gênero, usa apenas os de 'qualquer'.
         if (desafiosCandidatos.length === 0) {
-            desafiosCandidatos = desafios.filter(d => d.genero.toLowerCase() === 'qualquer');
+            desafiosCandidatos = todosDesafios.filter(d => d.genero.toLowerCase() === 'qualquer');
         }
 
         // 3. Se ainda assim não houver desafios, informa o jogador e passa a vez.
@@ -210,15 +271,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const desafioObj = desafiosCandidatos[Math.floor(Math.random() * desafiosCandidatos.length)];
         let desafioAtual = desafioObj.desafio;
 
-        // --- FIM DA LÓGICA MODIFICADA ---
-
         desafioAtual = desafioAtual.replace(/{Jogador 1}|{jogador 1}|{jogador1}/gi, `<strong>${jogador1.nome}</strong>`);
 
         if (desafioAtual.includes('{Jogador 2}') || desafioAtual.includes('{jogador 2}')) {
             let candidatosJogador2 = jogadores.filter(j => j.id !== jogador1.id);
             let candidatosFiltrados = [];
 
-            // Filtra Jogador 2 baseado na preferência do Jogador 1
             if (jogador1.preferencia === 'homem') {
                 candidatosFiltrados = candidatosJogador2.filter(j => j.genero === 'homem');
             } else if (jogador1.preferencia === 'mulher') {
@@ -227,7 +285,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 candidatosFiltrados = candidatosJogador2;
             }
 
-            // Fallback: se o filtro de preferência não retornar ninguém, usa a lista geral (exceto o próprio jogador 1)
             if (candidatosFiltrados.length === 0) {
                 candidatosFiltrados = candidatosJogador2;
             }
@@ -255,17 +312,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Vinculando Eventos (Event Listeners) ---
     document.getElementById('add-player-btn').addEventListener('click', adicionarJogador);
+    document.getElementById('add-challenge-btn').addEventListener('click', adicionarDesafioCustomizado); // Novo evento
     document.getElementById('start-game-btn').addEventListener('click', iniciarJogo);
     document.getElementById('next-challenge-btn').addEventListener('click', proximoDesafio);
     document.getElementById('end-game-btn').addEventListener('click', finalizarJogo);
 
-    document.getElementById('lista-jogadores').addEventListener('click', (e) => {
+    document.getElementById('lista-jogadores-cadastrados').addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('remove-btn')) {
             const idParaRemover = parseInt(e.target.getAttribute('data-id'));
             removerJogador(idParaRemover);
         }
     });
 
+    // Novo evento para remover desafios
+    document.getElementById('lista-desafios-customizados').addEventListener('click', (e) => {
+        if (e.target && e.target.classList.contains('remove-btn')) {
+            const idParaRemover = parseInt(e.target.getAttribute('data-id'));
+            removerDesafioCustomizado(idParaRemover);
+        }
+    });
+
     // --- Inicialização ---
     carregarJogadoresDoCache();
+    carregarDesafiosCustomizadosDoCache(); // Carrega os desafios salvos
 });
