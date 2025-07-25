@@ -147,6 +147,13 @@ main {
   color: var(--dark-color);
 }
 
+#cadastro-desafio summary {
+  margin-bottom: 1rem;
+  font-size: 1.17em;
+  font-weight: bold;
+  color: var(--dark-color);
+}
+
 #lista-jogadores,
 #lista-desafios {
   list-style: none;
