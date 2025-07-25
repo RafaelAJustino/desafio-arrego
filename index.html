@@ -1,49 +1,97 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-
+    <title>Verdade ou Desafio</title>
+    <!-- Link para a folha de estilos CSS -->
     <link rel="stylesheet" href="style.css" />
 
     <script
       async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6977577061036471"
+      crossorigin="anonymous"
     ></script>
   </head>
   <body>
-    <div id="container">
-      <div id="screen">
-        <span id="fullscreen"> </span>
-        <ins
-          class="adsbygoogle top"
-          style="display: block"
-          data-ad-client="ca-pub-6977577061036471"
-          data-ad-slot="0000001"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        ></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+    <div class="mobile-container">
+      <header>
+        <h1>Verdade ou Desafio</h1>
+      </header>
 
-        <span id="game"> </span>
+      <main>
+        <!-- Tela de Cadastro de Jogadores -->
+        <div id="tela-cadastro" class="tela ativa">
+          <form id="cadastro-form" onsubmit="return false;">
+            <div class="input-group">
+              <label for="nome">Nome do Jogador:</label>
+              <input type="text" id="nome" required />
+            </div>
 
-        <ins
-          class="adsbygoogle bottom"
-          style="display: block"
-          data-ad-client="ca-pub-6977577061036471"
-          data-ad-slot="0000002"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        ></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+            <div class="input-group">
+              <label for="genero">Gênero:</label>
+              <select id="genero" required>
+                <option value="homem">Homem</option>
+                <option value="mulher">Mulher</option>
+              </select>
+            </div>
 
-        <script src="script.js"></script>
-      </div>
+            <div class="input-group">
+              <label for="preferencia">Preferência:</label>
+              <select id="preferencia" required>
+                <option value="homem">Homem</option>
+                <option value="mulher">Mulher</option>
+                <option value="ambos">Ambos</option>
+              </select>
+            </div>
+            <button type="button" class="button" id="add-player-btn">
+              Adicionar Jogador
+            </button>
+          </form>
+
+          <div id="lista-jogadores-cadastrados">
+            <h3>Jogadores na Rodada:</h3>
+            <ul id="lista-jogadores"></ul>
+          </div>
+
+          <button class="button" id="start-game-btn">Iniciar Jogo</button>
+        </div>
+
+        <!-- Tela Principal do Jogo -->
+        <div id="tela-jogo" class="tela">
+          <div id="info-jogador-ativo">
+            <!-- É a vez de: <br />
+            <span id="nome-jogador-ativo"></span> -->
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-format="fluid"
+              data-ad-layout-key="-fb+5w+4e-db+86"
+              data-ad-client="ca-pub-6977577061036471"
+              data-ad-slot="3577005047"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+
+          <div id="desafio-container">
+            <p id="texto-desafio">Clique em "Próxima Rodada" para começar!</p>
+          </div>
+
+          <div class="game-buttons">
+            <button class="button" id="next-challenge-btn">
+              Próxima Rodada
+            </button>
+            <button class="button secondary" id="end-game-btn">
+              Voltar ao Início
+            </button>
+          </div>
+        </div>
+      </main>
     </div>
+
+    <!-- Link para o arquivo JavaScript -->
+    <script src="script.js"></script>
   </body>
 </html>
