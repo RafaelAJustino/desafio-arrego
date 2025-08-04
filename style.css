@@ -113,6 +113,7 @@ main {
   cursor: pointer;
   transition: background-color 0.3s;
   margin-top: 0.5rem;
+  max-height: 55px;
 }
 
 #start-game-btn {
@@ -261,6 +262,41 @@ main {
 .game-buttons {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
+  /* gap: 1rem; */
+  /* margin-top: 1rem; */
+}
+
+#arreguei-btn {
+  /* Começa escondido por padrão */
+  display: none;
+}
+
+.button.danger {
+  background-color: #c9184a; /* Um vermelho mais forte para perigo */
+}
+
+.button.danger:hover {
+  background-color: #a4133c;
+}
+
+.challenges-btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.1rem;
+}
+
+#next-challenge-btn {
+  width: 100%;
+  margin-right: 0.5rem;
+}
+
+.button.special {
+  background-color: #2a9d8f; /* Uma cor verde/azulada para diferenciar */
+  padding: 8px;
+}
+
+.button.special:hover {
+  background-color: #264653;
 }

@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- ESTRUTURA DE DESAFIOS PADRÃO ---
     const desafios = [
+        // ... (sua lista de desafios continua a mesma) ...
         { desafio: '{Jogador 1} dá um selinho em {Jogador 2}.', genero: 'qualquer' },
         { desafio: '{Jogador 1} beija de língua {Jogador 2}.', genero: 'qualquer' },
         { desafio: '{Jogador 1} beija a orelha de {Jogador 2}.', genero: 'qualquer' },
@@ -90,23 +91,80 @@ document.addEventListener('DOMContentLoaded', () => {
         { desafio: '{Jogador 1} mostra um nude próprio para o grupo. Se não tiver nenhum é so tirar um', genero: 'mulher' },
         { desafio: 'O grupo vota na parte do corpo mais sexy de {Jogador 1}. {Jogador 2} deve beijar essa parte.', genero: 'qualquer' },
         { desafio: '{Jogador 1} deve tirar uma foto sensual de {Jogador 2} e guardar como lembrança.', genero: 'homem' },
+        { desafio: '{Jogador 1} mostra um nude próprio para o grupo. Se não tiver nenhum é so tirar um', genero: 'mulher' },
         { desafio: '{Jogador 1} é um cavalo, {Jogador 2} deve cavalgar por 30 segundos.', genero: 'homem' },
+        { desafio: 'A jogadora mais nova deve beijar em cada jogador pelo tempo de sua idade em segundos', genero: 'mulher' },
+        { desafio: 'A jogadora mais velha deve fazer uma dança sensual somente de calcinha pelo dobro da sua idade em segundos', genero: 'mulher' },
+        { desafio: 'A jogadora mais alta deve fazer um desafio para cada jogador.', genero: 'mulher' },
+        { desafio: 'A jogadora mais baixa deve realizar um desafio imposto por cada jogador.', genero: 'mulher' },
+        { desafio: 'A jogadora mais peituda deve deixar todos desenharem ou escreverem algo nos seus peitos.', genero: 'mulher' },
+        { desafio: 'A jogadora menos peituda deve deixar todos beijar seus mamilos.', genero: 'mulher' },
+        { desafio: 'A jogadora mais bunduda deve ficar de 4 e deixar todos desenharem ou escreverem algo na sua bunda.', genero: 'mulher' },
+        { desafio: 'A jogadora com mais cara de santa deve beijar as partes íntimas de cada jogador ou deixar cada jogador beijar sua parte íntima.', genero: 'mulher' },
+        { desafio: '{jogador 1} e {jogador 2} ficam só de roupas intimas e dão uns amassos por {tempo}.', genero: 'qualquer' },
+        { desafio: '{Jogador 1} deixe {Jogador 2} escrever ou desenhar o que quiser no seu monte pubiano.', genero: 'qualquer' },
+        { desafio: '{Jogador 1} deve fechar os olhos e deixar {Jogador 2} passar o que quiser na sua boca, em seguida tente adivinhar o que é.', genero: 'qualquer' },
+        { desafio: '{Jogador 1} deve fechar os olhos e deixar {Jogador 2} passar o que quiser na sua parte íntima, em seguida tente adivinhar o que é.', genero: 'mulher' },
+        { desafio: 'Todos os homens ficam apenas de cueca por {rodada}.', genero: 'homem' },
+        { desafio: 'Todos as mulheres ficam apenas de calcinha por {rodada}.', genero: 'mulher' },
+    ];
+
+    const arreguei = [
+        'Tome 1 shot.',
+        'Tome 2 shots.',
+        'Tome 3 shots ou cada jogador te da um tapa na bunda',
+        'Cumpra o próximo desafio junto com o próximo jogador.',
+        'Tire uma peça de roupa e fique sem por 3 rodadas (acessórios não contam).',
+        'Mostre a bunda.',
+        'Mostre os peitos.',
+        'Todos tomam um shot.',
+        'Participe de todos os desafios até sua próxima rodada.',
+        'Cumpra um desafio que o grupo escolher.',
+        'Tome 1 shot por turno até sua próxima rodada.'
+    ];
+
+    // NOVO: Listas para a funcionalidade "Rolar o Dado"
+    const dado = [
+        { desafio: '{jogador 1} {acao} {corpo} de {jogador 2} por {tempo}.', genero: 'qualquer' },
+    ];
+
+    const corpo = [
+        'a boca',
+        'a orelha',
+        'o pescoço',
+        'a mão',
+        'o pé',
+        'a barriga',
+        'as costas',
+        'a coxa',
+        'a bunda',
+        'o mamilo',
+        'a nuca',
+        'o umbigo',
+        'a virilha',
+        'a parte íntima',
+    ];
+
+    const acao = [
+        'beija',
+        'lambe',
+        'chupa',
+        'acaricia',
+        'massageia',
     ];
 
     const tempos = ['15 segundos', '30 segundos', '1 minuto'];
     const rodadas = ['1 rodada', '2 rodadas', '3 rodadas'];
     const CACHE_KEY_JOGADORES = 'verdadeOuDesafioJogadores';
-    const CACHE_KEY_DESAFIOS = 'verdadeOuDesafioDesafiosCustom'; // Nova chave de cache
+    const CACHE_KEY_DESAFIOS = 'verdadeOuDesafioDesafiosCustom';
 
     let jogadores = [];
-    let desafiosCustomizados = []; // Novo array para desafios personalizados
+    let desafiosCustomizados = [];
     let jogadorAtivoIndex = 0;
+    let arregueiTimer = null;
 
-    // --- Funções de Cache (localStorage) ---
-    function salvarJogadoresNoCache() {
-        localStorage.setItem(CACHE_KEY_JOGADORES, JSON.stringify(jogadores));
-    }
-
+    // --- Funções de Cache, Lógica de Jogadores e Desafios (sem alteração) ---
+    function salvarJogadoresNoCache() { localStorage.setItem(CACHE_KEY_JOGADORES, JSON.stringify(jogadores)); }
     function carregarJogadoresDoCache() {
         const jogadoresSalvos = localStorage.getItem(CACHE_KEY_JOGADORES);
         if (jogadoresSalvos) {
@@ -114,12 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderizarJogadores();
         }
     }
-
-    // Novas funções de cache para desafios
-    function salvarDesafiosCustomizadosNoCache() {
-        localStorage.setItem(CACHE_KEY_DESAFIOS, JSON.stringify(desafiosCustomizados));
-    }
-
+    function salvarDesafiosCustomizadosNoCache() { localStorage.setItem(CACHE_KEY_DESAFIOS, JSON.stringify(desafiosCustomizados)); }
     function carregarDesafiosCustomizadosDoCache() {
         const desafiosSalvos = localStorage.getItem(CACHE_KEY_DESAFIOS);
         if (desafiosSalvos) {
@@ -127,40 +180,24 @@ document.addEventListener('DOMContentLoaded', () => {
             renderizarDesafiosCustomizados();
         }
     }
-
-    // --- Funções de Lógica do Jogo (Jogadores) ---
     function adicionarJogador() {
         const nomeInput = document.getElementById('nome');
         const generoInput = document.getElementById('genero');
         const preferenciaInput = document.getElementById('preferencia');
-
         const nome = nomeInput.value.trim();
-        if (!nome) {
-            alert('Por favor, insira um nome.');
-            return;
-        }
-
-        const jogador = {
-            id: Date.now(),
-            nome: nome,
-            genero: generoInput.value,
-            preferencia: preferenciaInput.value
-        };
-
+        if (!nome) { alert('Por favor, insira um nome.'); return; }
+        const jogador = { id: Date.now(), nome: nome, genero: generoInput.value, preferencia: preferenciaInput.value };
         jogadores.push(jogador);
         salvarJogadoresNoCache();
         renderizarJogadores();
-
         nomeInput.value = '';
         nomeInput.focus();
     }
-
     function removerJogador(idJogador) {
         jogadores = jogadores.filter(j => j.id !== idJogador);
         salvarJogadoresNoCache();
         renderizarJogadores();
     }
-
     function renderizarJogadores() {
         const lista = document.getElementById('lista-jogadores');
         lista.innerHTML = '';
@@ -171,37 +208,23 @@ document.addEventListener('DOMContentLoaded', () => {
             lista.appendChild(item);
         });
     }
-
-    // --- Novas Funções de Lógica (Desafios) ---
     function adicionarDesafioCustomizado() {
         const textoInput = document.getElementById('texto-desafio-customizado');
         const generoInput = document.getElementById('genero-desafio');
         const texto = textoInput.value.trim();
-
-        if (!texto) {
-            alert('Por favor, escreva o texto do desafio.');
-            return;
-        }
-
-        const desafio = {
-            id: Date.now(),
-            desafio: texto,
-            genero: generoInput.value
-        };
-
+        if (!texto) { alert('Por favor, escreva o texto do desafio.'); return; }
+        const desafio = { id: Date.now(), desafio: texto, genero: generoInput.value };
         desafiosCustomizados.push(desafio);
         salvarDesafiosCustomizadosNoCache();
         renderizarDesafiosCustomizados();
         textoInput.value = '';
         textoInput.focus();
     }
-
     function removerDesafioCustomizado(idDesafio) {
         desafiosCustomizados = desafiosCustomizados.filter(d => d.id !== idDesafio);
         salvarDesafiosCustomizadosNoCache();
         renderizarDesafiosCustomizados();
     }
-
     function renderizarDesafiosCustomizados() {
         const lista = document.getElementById('lista-desafios');
         lista.innerHTML = '';
@@ -212,7 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
             lista.appendChild(item);
         });
     }
-
 
     // --- Funções de Controle de Jogo ---
     function trocarTela(idTelaAtiva) {
@@ -225,75 +247,106 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('É necessário ter pelo menos 2 jogadores para iniciar.');
             return;
         }
-        jogadorAtivoIndex = -1;
+        jogadorAtivoIndex = -1; // Começa em -1 para que a primeira rodada seja do jogador 0
         trocarTela('tela-jogo');
-        proximoDesafio();
+        proximoDesafio(); // Gera o primeiro desafio
     }
 
     function finalizarJogo() {
         trocarTela('tela-cadastro');
+        const arregueiBtn = document.getElementById('arreguei-btn');
+        arregueiBtn.style.display = 'none';
+        if (arregueiTimer) {
+            clearTimeout(arregueiTimer);
+        }
     }
 
-    function proximoDesafio() {
+    function handleArregueiClick() {
+        const arregueiBtn = document.getElementById('arreguei-btn');
+        const textoDesafio = document.getElementById('texto-desafio');
+        const jogador1 = jogadores[jogadorAtivoIndex];
+        arregueiBtn.style.display = 'none';
+        if (arregueiTimer) { clearTimeout(arregueiTimer); }
+        const pena = arreguei[Math.floor(Math.random() * arreguei.length)];
+        textoDesafio.innerHTML = `<strong>${jogador1.nome}</strong> arregou!<br><br><strong>Pena:</strong> ${pena}`;
+    }
+
+    // NOVO: Função auxiliar para encontrar o Jogador 2
+    function encontrarJogador2(jogador1) {
+        let candidatosJogador2 = jogadores.filter(j => j.id !== jogador1.id);
+        if (candidatosJogador2.length === 0) return null;
+
+        let candidatosFiltrados = [];
+        if (jogador1.preferencia === 'homem') {
+            candidatosFiltrados = candidatosJogador2.filter(j => j.genero === 'homem');
+        } else if (jogador1.preferencia === 'mulher') {
+            candidatosFiltrados = candidatosJogador2.filter(j => j.genero === 'mulher');
+        } else { // 'ambos'
+            candidatosFiltrados = candidatosJogador2;
+        }
+
+        // Se a preferência não encontrar ninguém, usa a lista geral de candidatos
+        if (candidatosFiltrados.length === 0) {
+            candidatosFiltrados = candidatosJogador2;
+        }
+
+        return candidatosFiltrados[Math.floor(Math.random() * candidatosFiltrados.length)];
+    }
+
+    // NOVO: Função para iniciar um turno de jogo (seja desafio ou dado)
+    function iniciarTurno(funcaoGeradoraDeDesafio) {
         if (jogadores.length < 2) {
             finalizarJogo();
             alert('Jogadores insuficientes. O jogo foi finalizado.');
             return;
         }
-        
-        // Combina os desafios padrão com os desafios customizados
-        const todosDesafios = [...desafios, ...desafiosCustomizados];
-        if (todosDesafios.length === 0) {
-            document.getElementById('texto-desafio').innerHTML = `Não há desafios disponíveis. Adicione alguns desafios personalizados para jogar!`;
-            return;
-        }
 
+        // Lógica do timer do botão "Arreguei"
+        const arregueiBtn = document.getElementById('arreguei-btn');
+        if (arregueiTimer) { clearTimeout(arregueiTimer); }
+        arregueiBtn.style.display = 'block';
+        arregueiTimer = setTimeout(() => {
+            arregueiBtn.style.display = 'none';
+        }, 10000);
+
+        // Avança para o próximo jogador
         jogadorAtivoIndex = (jogadorAtivoIndex + 1) % jogadores.length;
         const jogador1 = jogadores[jogadorAtivoIndex];
 
-        // 1. Filtra desafios com base no gênero do jogador ativo ('homem', 'mulher') ou 'qualquer'.
-        let desafiosCandidatos = todosDesafios.filter(d =>
-            d.genero.toLowerCase() === jogador1.genero.toLowerCase() || d.genero.toLowerCase() === 'qualquer'
-        );
+        // Chama a função específica (proximoDesafio ou rolarDado) para gerar o texto
+        funcaoGeradoraDeDesafio(jogador1);
+    }
 
-        // 2. Fallback: se não houver desafios específicos para o gênero, usa apenas os de 'qualquer'.
-        if (desafiosCandidatos.length === 0) {
-            desafiosCandidatos = todosDesafios.filter(d => d.genero.toLowerCase() === 'qualquer');
-        }
-
-        // 3. Se ainda assim não houver desafios, informa o jogador e passa a vez.
-        if (desafiosCandidatos.length === 0) {
-            document.getElementById('texto-desafio').innerHTML = `<strong>${jogador1.nome}</strong>, não encontramos um bom desafio para você. Passe a vez!`;
+    // ALTERADO: Agora apenas gera o texto do desafio
+    function gerarDesafioDaLista(jogador1) {
+        const todosDesafios = [...desafios, ...desafiosCustomizados];
+        if (todosDesafios.length === 0) {
+            document.getElementById('texto-desafio').innerHTML = `Não há desafios disponíveis. Adicione alguns!`;
             return;
         }
 
-        // 4. Seleciona um desafio aleatório da lista de candidatos filtrada.
+        let desafiosCandidatos = todosDesafios.filter(d =>
+            d.genero.toLowerCase() === jogador1.genero.toLowerCase() || d.genero.toLowerCase() === 'qualquer'
+        );
+        if (desafiosCandidatos.length === 0) {
+            desafiosCandidatos = todosDesafios.filter(d => d.genero.toLowerCase() === 'qualquer');
+        }
+        if (desafiosCandidatos.length === 0) {
+            document.getElementById('texto-desafio').innerHTML = `<strong>${jogador1.nome}</strong>, não há desafios para você. Passe a vez!`;
+            return;
+        }
+
         const desafioObj = desafiosCandidatos[Math.floor(Math.random() * desafiosCandidatos.length)];
         let desafioAtual = desafioObj.desafio;
 
         desafioAtual = desafioAtual.replace(/{Jogador 1}|{jogador 1}|{jogador1}/gi, `<strong>${jogador1.nome}</strong>`);
 
         if (desafioAtual.includes('{Jogador 2}') || desafioAtual.includes('{jogador 2}')) {
-            let candidatosJogador2 = jogadores.filter(j => j.id !== jogador1.id);
-            let candidatosFiltrados = [];
-
-            if (jogador1.preferencia === 'homem') {
-                candidatosFiltrados = candidatosJogador2.filter(j => j.genero === 'homem');
-            } else if (jogador1.preferencia === 'mulher') {
-                candidatosFiltrados = candidatosJogador2.filter(j => j.genero === 'mulher');
-            } else { // Preferência 'ambos'
-                candidatosFiltrados = candidatosJogador2;
-            }
-
-            if (candidatosFiltrados.length === 0) {
-                candidatosFiltrados = candidatosJogador2;
-            }
-
-            if (candidatosFiltrados.length > 0) {
-                const jogador2 = candidatosFiltrados[Math.floor(Math.random() * candidatosFiltrados.length)];
+            const jogador2 = encontrarJogador2(jogador1);
+            if (jogador2) {
                 desafioAtual = desafioAtual.replace(/{Jogador 2}|{jogador 2}/gi, `<strong>${jogador2.nome}</strong>`);
             } else {
-                desafioAtual = `<strong>${jogador1.nome}</strong>, você precisa de mais gente no jogo para este desafio! Passe a vez.`
+                desafioAtual = `<strong>${jogador1.nome}</strong>, precisa de mais gente no jogo! Passe a vez.`
             }
         }
 
@@ -301,7 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const tempoAleatorio = tempos[Math.floor(Math.random() * tempos.length)];
             desafioAtual = desafioAtual.replace(/{tempo}/gi, `<strong>${tempoAleatorio}</strong>`);
         }
-
         if (desafioAtual.includes('{rodada}')) {
             const rodadaAleatoria = rodadas[Math.floor(Math.random() * rodadas.length)];
             desafioAtual = desafioAtual.replace(/{rodada}/gi, `<strong>${rodadaAleatoria}</strong>`);
@@ -310,29 +362,56 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('texto-desafio').innerHTML = desafioAtual;
     }
 
+    // NOVO: Função que gera o texto do dado
+    function gerarDesafioDoDado(jogador1) {
+        const desafioTemplate = dado[0].desafio;
+
+        const jogador2 = encontrarJogador2(jogador1);
+        if (!jogador2) {
+            document.getElementById('texto-desafio').innerHTML = `<strong>${jogador1.nome}</strong>, precisa de mais gente no jogo para rolar o dado! Passe a vez.`;
+            return;
+        }
+
+        const acaoAleatoria = acao[Math.floor(Math.random() * acao.length)];
+        const corpoAleatorio = corpo[Math.floor(Math.random() * corpo.length)];
+        const tempoAleatorio = tempos[Math.floor(Math.random() * tempos.length)];
+
+        let desafioFinal = desafioTemplate
+            .replace(/{jogador 1}|{jogador 1}|{jogador1}/gi, `<strong>${jogador1.nome}</strong>`)
+            .replace(/{acao}/gi, `<strong>${acaoAleatoria}</strong>`)
+            .replace(/{corpo}/gi, `<strong>${corpoAleatorio}</strong>`)
+            .replace(/{jogador 2}|{jogador 2}/gi, `<strong>${jogador2.nome}</strong>`)
+            .replace(/{tempo}/gi, `<strong>${tempoAleatorio}</strong>`);
+
+        document.getElementById('texto-desafio').innerHTML = desafioFinal;
+    }
+
     // --- Vinculando Eventos (Event Listeners) ---
     document.getElementById('add-player-btn').addEventListener('click', adicionarJogador);
-    document.getElementById('add-challenge-btn').addEventListener('click', adicionarDesafioCustomizado); // Novo evento
+    document.getElementById('add-challenge-btn').addEventListener('click', adicionarDesafioCustomizado);
     document.getElementById('start-game-btn').addEventListener('click', iniciarJogo);
-    document.getElementById('next-challenge-btn').addEventListener('click', proximoDesafio);
+
+    // ALTERADO: Botões de jogo agora chamam o 'iniciarTurno' com a função apropriada
+    document.getElementById('next-challenge-btn').addEventListener('click', () => iniciarTurno(gerarDesafioDaLista));
+    document.getElementById('roll-dice-btn').addEventListener('click', () => iniciarTurno(gerarDesafioDoDado)); // NOVO
+
     document.getElementById('end-game-btn').addEventListener('click', finalizarJogo);
+    document.getElementById('arreguei-btn').addEventListener('click', handleArregueiClick);
 
     document.getElementById('lista-jogadores-cadastrados').addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('remove-btn')) {
-            const idParaRemover = parseInt(e.target.getAttribute('data-id'));
-            removerJogador(idParaRemover);
+            removerJogador(parseInt(e.target.getAttribute('data-id')));
         }
     });
-
-    // Novo evento para remover desafios
     document.getElementById('lista-desafios-customizados').addEventListener('click', (e) => {
         if (e.target && e.target.classList.contains('remove-btn')) {
-            const idParaRemover = parseInt(e.target.getAttribute('data-id'));
-            removerDesafioCustomizado(idParaRemover);
+            removerDesafioCustomizado(parseInt(e.target.getAttribute('data-id')));
         }
     });
 
     // --- Inicialização ---
     carregarJogadoresDoCache();
-    carregarDesafiosCustomizadosDoCache(); // Carrega os desafios salvos
+    carregarDesafiosCustomizadosDoCache();
+    // Ajuste para deixar a mensagem inicial na tela de jogo
+    document.getElementById('texto-desafio').innerHTML = `Clique em "Próxima Rodada" ou "Rolar o Dado" para começar!`;
 });
