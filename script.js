@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { desafio: '{Jogador 1} tem seus mamilos chupados por todos os jogadores da roda (um de cada vez).', genero: 'qualquer' },
         { desafio: '{Jogador 1} escolhe dois jogadores para se beijarem de língua por {tempo}.', genero: 'qualquer' },
         { desafio: '{Jogador 1} escolhe dois jogadores para simularem uma posição sexual por {tempo}.', genero: 'qualquer' },
-        { desafio: '{Jogador 1} fica de 4 e deixa cada jogador dar um tapa em sua bunda.', genero: 'qualquer' },
+        { desafio: '{Jogador 1} fica de 4 e deixa cada jogador dar um tapa em sua bunda.', genero: 'mulher' },
         { desafio: '{Jogador 2} dá uma ordem para {Jogador 1}, que deve ser cumprida imediatamente.', genero: 'qualquer' },
         { desafio: '{Jogador 1} mostra uma parte íntima do corpo sem tirar a roupa.', genero: 'qualquer' },
         { desafio: '{Jogador 1} mostra a genital sem tirar a roupa.', genero: 'qualquer' },
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { desafio: '{Jogador 2} senta no rosto de {Jogador 1} por {tempo}.', genero: 'homem' },
         { desafio: '{Jogador 2} pode usar um cinto para bater 3 vezes na bunda de {Jogador 1}.', genero: 'qualquer' },
         { desafio: '{Jogador 2} tira uma foto sensual e a envia para {Jogador 1}.', genero: 'homem' },
-        { desafio: '{Jogador 2} fica nu(a) no meio da roda e deixa todos desenharem algo em seu corpo onde quiserem.', genero: 'mulher' },
+        { desafio: '{Jogador 1} fica nu(a) no meio da roda e deixa todos desenharem algo em seu corpo onde quiserem.', genero: 'mulher' },
         { desafio: '{Jogador 2} e {Jogador 1} se beijam enquanto se apalpam por {tempo}.', genero: 'qualquer' },
         { desafio: '{Jogador 2} e {Jogador 1} vão para outro cômodo e o {Jogador 1} deve exibir alguma parte de seu corpo.', genero: 'qualquer' },
         { desafio: '{Jogador 1} vai para outro cômodo, e cada jogador, um de cada vez, deve ir até lá para que {Jogador 1} exiba uma parte do corpo.', genero: 'qualquer' },
@@ -85,8 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { desafio: '{Jogador 1} usa um batom para deixar uma marca de beijo em um lugar secreto no corpo de {Jogador 2}.', genero: 'mulher' },
         { desafio: '{Jogador 1} tem que tirar uma peça de roupa de {Jogador 2} o mais lentamente possível.', genero: 'qualquer' },
         { desafio: '{Jogador 1} e {Jogador 2} devem tirar a parte de cima da roupa e se abraçar por {tempo}.', genero: 'qualquer' },
-        { desafio: '{Jogador 2} deita no chão virado para cima e o {Jogador 1} tem que fazer 5 flexões. A cada flexão, {Jogador 2} dá um selinho em {jogador 2}.', genero: 'homem' },
-        { desafio: '{Jogador 2} deita no chão virado para cima e o {Jogador 1} tem que fazer 10 agachamentos até encostar a bunda no colo de {jogador 2}', genero: 'mulher' },
+        { desafio: '{Jogador 2} deita no chão virado para cima e o {Jogador 1} tem que fazer 5 flexões. A cada flexão, {Jogador 2} dá um selinho em {Jogador 2}.', genero: 'homem' },
+        { desafio: '{Jogador 2} deita no chão virado para cima e o {Jogador 1} tem que fazer 10 agachamentos até encostar a bunda no colo de {Jogador 2}', genero: 'mulher' },
         { desafio: '{Jogador 1} faz um desafio para ser cumprido por {Jogador 2}', genero: 'qualquer' },
         { desafio: '{Jogador 1} mostra um nude próprio para o grupo. Se não tiver nenhum é so tirar um', genero: 'mulher' },
         { desafio: 'O grupo vota na parte do corpo mais sexy de {Jogador 1}. {Jogador 2} deve beijar essa parte.', genero: 'qualquer' },
@@ -101,12 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
         { desafio: 'A jogadora menos peituda deve deixar todos beijar seus mamilos.', genero: 'mulher' },
         { desafio: 'A jogadora mais bunduda deve ficar de 4 e deixar todos desenharem ou escreverem algo na sua bunda.', genero: 'mulher' },
         { desafio: 'A jogadora com mais cara de santa deve beijar as partes íntimas de cada jogador ou deixar cada jogador beijar sua parte íntima.', genero: 'mulher' },
-        { desafio: '{jogador 1} e {jogador 2} ficam só de roupas intimas e dão uns amassos por {tempo}.', genero: 'qualquer' },
+        { desafio: '{Jogador 1} e {Jogador 2} ficam só de roupas intimas e dão uns amassos por {tempo}.', genero: 'qualquer' },
         { desafio: '{Jogador 1} deixe {Jogador 2} escrever ou desenhar o que quiser no seu monte pubiano.', genero: 'qualquer' },
         { desafio: '{Jogador 1} deve fechar os olhos e deixar {Jogador 2} passar o que quiser na sua boca, em seguida tente adivinhar o que é.', genero: 'qualquer' },
         { desafio: '{Jogador 1} deve fechar os olhos e deixar {Jogador 2} passar o que quiser na sua parte íntima, em seguida tente adivinhar o que é.', genero: 'mulher' },
         { desafio: 'Todos os homens ficam apenas de cueca por {rodada}.', genero: 'homem' },
         { desafio: 'Todos as mulheres ficam apenas de calcinha por {rodada}.', genero: 'mulher' },
+        { desafio: '{Jogador 1} beije {Jogador 2} da boca aos pés, sem pressa.', genero: 'homem' },
+
     ];
 
     const arreguei = [
@@ -125,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // NOVO: Listas para a funcionalidade "Rolar o Dado"
     const dado = [
-        { desafio: '{jogador 1} {acao} {corpo} de {jogador 2} por {tempo}.', genero: 'qualquer' },
+        { desafio: '{Jogador 1} {acao} {corpo} de {Jogador 2} por {tempo}.', genero: 'qualquer' },
     ];
 
     const corpo = [
@@ -339,12 +341,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const desafioObj = desafiosCandidatos[Math.floor(Math.random() * desafiosCandidatos.length)];
         let desafioAtual = desafioObj.desafio;
 
-        desafioAtual = desafioAtual.replace(/{Jogador 1}|{jogador 1}|{jogador1}/gi, `<strong>${jogador1.nome}</strong>`);
+        desafioAtual = desafioAtual.replace(/{Jogador 1}|{Jogador 1}|{jogador1}/gi, `<strong>${jogador1.nome}</strong>`);
 
-        if (desafioAtual.includes('{Jogador 2}') || desafioAtual.includes('{jogador 2}')) {
+        if (desafioAtual.includes('{Jogador 2}') || desafioAtual.includes('{Jogador 2}')) {
             const jogador2 = encontrarJogador2(jogador1);
             if (jogador2) {
-                desafioAtual = desafioAtual.replace(/{Jogador 2}|{jogador 2}/gi, `<strong>${jogador2.nome}</strong>`);
+                desafioAtual = desafioAtual.replace(/{Jogador 2}|{Jogador 2}/gi, `<strong>${jogador2.nome}</strong>`);
             } else {
                 desafioAtual = `<strong>${jogador1.nome}</strong>, precisa de mais gente no jogo! Passe a vez.`
             }
@@ -377,10 +379,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const tempoAleatorio = tempos[Math.floor(Math.random() * tempos.length)];
 
         let desafioFinal = desafioTemplate
-            .replace(/{jogador 1}|{jogador 1}|{jogador1}/gi, `<strong>${jogador1.nome}</strong>`)
+            .replace(/{Jogador 1}|{Jogador 1}|{jogador1}/gi, `<strong>${jogador1.nome}</strong>`)
             .replace(/{acao}/gi, `<strong>${acaoAleatoria}</strong>`)
             .replace(/{corpo}/gi, `<strong>${corpoAleatorio}</strong>`)
-            .replace(/{jogador 2}|{jogador 2}/gi, `<strong>${jogador2.nome}</strong>`)
+            .replace(/{Jogador 2}|{Jogador 2}/gi, `<strong>${jogador2.nome}</strong>`)
             .replace(/{tempo}/gi, `<strong>${tempoAleatorio}</strong>`);
 
         document.getElementById('texto-desafio').innerHTML = desafioFinal;
